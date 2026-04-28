@@ -19,7 +19,7 @@ document.getElementById("date").innerText =
     month: "short"
   });
 
-/* RESET */
+/* DAILY RESET */
 const today = new Date().toDateString();
 if (lastDate !== today) {
   items.forEach(i => i.done = false);
@@ -67,6 +67,11 @@ function shouldShow(item) {
   return true;
 }
 
+/* HAPTIC */
+function vibrate(ms = 10) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
 /* RENDER */
 function render() {
   list.innerHTML = "";
@@ -88,31 +93,68 @@ function render() {
       <span>${item.text}</span>
     `;
 
+    /* CHECKBOX */
     div.querySelector("input").onchange = (e) => {
       item.done = e.target.checked;
+
+      div.classList.add("tap");
+      vibrate(10);
+
+      setTimeout(() => div.classList.remove("tap"), 100);
+
       save();
     };
 
+    /* SWIPE */
     let startX = 0;
 
-    div.ontouchstart = e => startX = e.touches[0].clientX;
+    div.ontouchstart = e => {
+      startX = e.touches[0].clientX;
+    };
+
+    div.ontouchmove = e => {
+      let moveX = e.touches[0].clientX - startX;
+      div.style.transform = `translateX(${moveX}px)`;
+
+      if (moveX > 40) {
+        bg.style.opacity = "1";
+      } else {
+        bg.style.opacity = "0";
+      }
+    };
 
     div.ontouchend = e => {
       let diff = e.changedTouches[0].clientX - startX;
 
       if (diff > 80) {
         div.style.transform = "translateX(80px)";
-      } else if (diff < -80) {
+        bg.style.opacity = "1";
+        vibrate(20);
+      }
+
+      else if (diff < -80) {
         item.done = true;
+        vibrate(15);
         save();
-      } else {
+      }
+
+      else {
         div.style.transform = "translateX(0)";
+        bg.style.opacity = "0";
       }
     };
 
+    /* DELETE */
     bg.onclick = () => {
-      items.splice(index, 1);
-      save();
+      vibrate(30);
+
+      div.style.transform = "translateX(100%)";
+      div.style.opacity = "0";
+
+      setTimeout(() => {
+        items.splice(index, 1);
+        save();
+      }, 200);
     };
 
     wrapper.append(bg, div);
