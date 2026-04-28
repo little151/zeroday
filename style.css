@@ -1,0 +1,216 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: #0b0f1a;
+  color: white;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header span {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* BUTTON */
+#addBtn {
+  font-size: 20px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: #6c5ce7;
+  border: none;
+  color: white;
+  transition: transform 0.15s ease;
+}
+
+#addBtn:active {
+  transform: scale(0.92);
+}
+
+/* PROGRESS */
+.progress-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 30px auto;
+}
+
+svg {
+  transform: rotate(-90deg);
+}
+
+.bg-circle {
+  fill: none;
+  stroke: rgba(255,255,255,0.06);
+  stroke-width: 8;
+}
+
+.progress-circle {
+  fill: none;
+  stroke: #6c5ce7;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 339;
+  stroke-dashoffset: 339;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+#progressText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* LIST */
+.item-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  margin-top: 10px;
+}
+
+.delete-bg {
+  position: absolute;
+  inset: 0;
+  background: #ff3b30;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease;
+}
+
+.item:active {
+  transform: scale(0.97);
+}
+
+.item.completed span {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+  accent-color: #6c5ce7;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 320px;
+  padding: 20px;
+  border-radius: 20px;
+
+  background: rgba(20,20,30,0.85);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  transform: scale(0.9);
+  transition: 0.25s;
+}
+
+.modal.active .modal-content {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+#closeModal {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+/* INPUT */
+input, select {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+select option {
+  background: #111;
+}
+
+/* BUTTON */
+#saveTask {
+  padding: 12px;
+  border-radius: 12px;
+  background: #6c5ce7;
+  border: none;
+  color: white;
+}
+
+/* DAYS */
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.days label {
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  font-size: 12px;
+}
+
+.hidden {
+  display: none;
+}
