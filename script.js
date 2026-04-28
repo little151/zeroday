@@ -72,6 +72,15 @@ function vibrate(ms = 10) {
   if (navigator.vibrate) navigator.vibrate(ms);
 }
 
+/* SPRING FUNCTION */
+function springBack(el) {
+  el.style.transition = "transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)";
+  el.style.transform = "translateX(0)";
+  setTimeout(() => {
+    el.style.transition = "";
+  }, 250);
+}
+
 /* RENDER */
 function render() {
   list.innerHTML = "";
@@ -93,16 +102,28 @@ function render() {
       <span>${item.text}</span>
     `;
 
+    /* COMPLETE ACTION */
+    function completeTask() {
+      item.done = true;
+
+      div.classList.add("success");
+      vibrate(15);
+
+      pulseRing();
+
+      setTimeout(() => {
+        save();
+      }, 200);
+    }
+
     /* CHECKBOX */
     div.querySelector("input").onchange = (e) => {
-      item.done = e.target.checked;
-
-      div.classList.add("tap");
-      vibrate(10);
-
-      setTimeout(() => div.classList.remove("tap"), 100);
-
-      save();
+      if (e.target.checked) {
+        completeTask();
+      } else {
+        item.done = false;
+        save();
+      }
     };
 
     /* SWIPE */
@@ -110,6 +131,7 @@ function render() {
 
     div.ontouchstart = e => {
       startX = e.touches[0].clientX;
+      div.style.transition = "";
     };
 
     div.ontouchmove = e => {
@@ -133,14 +155,12 @@ function render() {
       }
 
       else if (diff < -80) {
-        item.done = true;
-        vibrate(15);
-        save();
+        completeTask();
       }
 
       else {
-        div.style.transform = "translateX(0)";
         bg.style.opacity = "0";
+        springBack(div); // 🔥 spring animation
       }
     };
 
@@ -172,6 +192,16 @@ function updateProgress(list) {
 
   circle.style.strokeDashoffset = 339 * (1 - percent);
   progressText.innerText = Math.round(percent * 100) + "%";
+}
+
+/* RING PULSE */
+function pulseRing() {
+  circle.style.transition = "stroke-dashoffset 0.4s ease, filter 0.3s";
+  circle.style.filter = "drop-shadow(0 0 6px #6c5ce7)";
+
+  setTimeout(() => {
+    circle.style.filter = "none";
+  }, 300);
 }
 
 /* SAVE */
